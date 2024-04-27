@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.content {
+    padding-bottom: 60px; /* Adjust according to footer's height */
+}
