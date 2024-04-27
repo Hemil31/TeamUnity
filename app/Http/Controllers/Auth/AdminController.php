@@ -26,12 +26,13 @@ class AdminController extends Controller
      */
     public function login(AuthValidation $request): RedirectResponse
     {
+        // Get the email and password from the request
         $credentials = $request->only('email', 'password');
-
+        // Check if the user is authenticated
         if (Auth::attempt($credentials)) {
             return redirect()->intended('/dashboard');
         }
-
+        // Redirect back with error message
         return redirect()->back()->withInput()->withErrors(['loginError' => 'Invalid email or password.']);
     }
 
@@ -39,8 +40,11 @@ class AdminController extends Controller
      * Summary of logout
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout(): RedirectResponse{
+    public function logout(): RedirectResponse
+    {
+        // Logout the user
         Auth::logout();
+        // Redirect to login page
         return redirect('/login');
     }
 

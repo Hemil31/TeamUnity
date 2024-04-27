@@ -26,19 +26,53 @@
                         <a class="nav-link" href="#">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Companies</a>
+                        <a class="nav-link" href="{{ route('companies.index') }}">Companies</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Employees</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Logout <i class="fas fa-sign-out-alt"></i></a>
+                        <a class="nav-link" href="{{ route('logout') }}">Logout <i class="fas fa-sign-out-alt"></i></a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <main role="main" class="container">
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ session('error') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
         @yield('content')
-    </main>
+    </div>

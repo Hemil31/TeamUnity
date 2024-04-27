@@ -1,4 +1,4 @@
-{{-- <footer class="footer bg-dark text-light">
+<footer class="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
@@ -33,14 +33,48 @@
             </div>
         </div>
     </div>
-</footer> --}}
+</footer>
 
 <!-- Bootstrap JS (optional, only if needed) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Your custom scripts -->
-@stack('scripts')
+<script>
+    $(document).ready(function() {
+        // Show success modal if there is a success message
+        @if (session('success'))
+            $('#successModal').modal('show');
+            setTimeout(function() {
+                $('#successModal').modal('hide');
+            }, 1000);
+        @endif
+
+        // Show error modal if there is an error message
+        @if (session('error'))
+            $('#errorModal').modal('show');
+            // setTimeout(function() {
+            //     $('#errorModal').modal('hide');
+            // }, 1000);
+        @endif
+    });
+
+    function adjustFooterPosition() {
+        var contentHeight = $('.content').outerHeight();
+        var windowHeight = $(window).height();
+        var footer = $('.footer');
+
+        if (contentHeight < windowHeight) {
+            footer.css('position', 'fixed');
+            footer.css('bottom', 0);
+        } else {
+            footer.css('position', 'static');
+        }
+    }
+    // Call on document ready and window resize
+    $(document).ready(adjustFooterPosition);
+    $(window).resize(adjustFooterPosition);
+</script>
 </body>
 
 </html>
