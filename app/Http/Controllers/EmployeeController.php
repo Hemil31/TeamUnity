@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
+use App\Models\Companies;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -11,7 +14,14 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            // Fetch all companies
+            $data = Employee::all();
+            return view('employees.employee', compact('data'));
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while fetching the Employee: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -19,15 +29,34 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            // Fetch all companies
+            $data = Companies::all();
+            return view('employees.addemployee', compact('data'));
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while fetching the Add Employee: ' . $e->getMessage());
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        //
+
+        try {
+            // Validate the request
+            $data = $request->validated();
+            // Create a new employee
+            Employee::create($data);
+
+            // Redirect to the employee index page with a success message
+            return redirect()->route('employee.index')->with('success', 'Employee created successfully');
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while creating the Employee: ' . $e->getMessage());
+        }
     }
 
     /**

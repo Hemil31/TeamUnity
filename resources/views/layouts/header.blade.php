@@ -93,7 +93,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('employees*') ? 'active' : '' }}" href="">
+                            <a class="nav-link {{ Request::is('employees*') ? 'active' : '' }}" href="{{ route('employee.index') }}">
                                 <span class="icon">&#x1F465;</span> <span class="title">Employees</span>
                             </a>
                         </li>

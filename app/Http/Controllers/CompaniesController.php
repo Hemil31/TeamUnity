@@ -16,7 +16,7 @@ class CompaniesController extends Controller
         try {
             // Fetch all companies
             $data = Companies::all();
-            return view('companies', compact('data'));
+            return view('companies.companies', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while fetching the companies: ' . $e->getMessage());
@@ -30,7 +30,7 @@ class CompaniesController extends Controller
     {
         try {
             // Show the form for creating a new company
-            return view('addcompanies');
+            return view('companies.addcompanies');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while showing the create company form: ' . $e->getMessage());
@@ -84,7 +84,7 @@ class CompaniesController extends Controller
         try {
             // Find the company by ID
             $data = Companies::find($id);
-            return view('editcompanies', compact('data'));
+            return view('companies.editcompanies', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while showing the edit company form: ' . $e->getMessage());
