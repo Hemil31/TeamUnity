@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Dashboard')
+@section('page-title', 'Dashboard')
+
 @section('content')
     <!-- Content section -->
     <div class="row mt-4">

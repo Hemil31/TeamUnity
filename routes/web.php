@@ -16,13 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/login', [AdminController::class, 'index']);
 Route::post('/login', [AdminController::class, 'login'])->name('login');
-
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
-
 Route::get('/dashboard', function () {
     return view('dashboard');
-});
-
+})->name('dashboard');
 
 Route::resource('companies', CompaniesController::class);
 

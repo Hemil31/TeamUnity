@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\auth;
+namespace App\Http\Controllers\Auth; // Fixed the namespace to 'Auth' instead of 'auth'
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthValidation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth; // Imported Auth facade
 
 class AdminController extends Controller
 {
     /**
-     * Summary of index
+     * Display the admin panel.
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
@@ -21,31 +22,50 @@ class AdminController extends Controller
 
 
     /**
-     * Summary of login
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * Handle the authentication process.
+     *
+     * @param  AuthValidation  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function login(AuthValidation $request): RedirectResponse
     {
-        // Get the email and password from the request
-        $credentials = $request->only('email', 'password');
-        // Check if the user is authenticated
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('/dashboard');
+        try {
+            // Attempt to retrieve email and password from the request
+            $credentials = $request->only('email', 'password');
+
+            // Try to authenticate the user
+            if (Auth::attempt($credentials)) {
+                return redirect()->intended('/dashboard'); // Redirect to intended URL after successful login
+            } else {
+                // Redirect back with error message if authentication fails
+                return redirect()->back()->withInput()->withErrors(['error' => 'Invalid email or password.']);
+            }
+        } catch (\Exception $e) {
+            // Catch any exceptions that might occur during authentication
+            // Log the exception for debugging if necessary
+            // Redirect back with a generic error message
+            return redirect()->back()->withInput()->withErrors(['error' => 'An error occurred during login. Please try again.']);
         }
-        // Redirect back with error message
-        return redirect()->back()->withInput()->withErrors(['loginError' => 'Invalid email or password.']);
     }
 
     /**
-     * Summary of logout
+     * Handle the logout process.
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function logout(): RedirectResponse
     {
-        // Logout the user
-        Auth::logout();
-        // Redirect to login page
-        return redirect('/login');
+        try {
+            // Attempt to logout the user
+            Auth::logout();
+            // Redirect to the login page after logout
+            return redirect('/login');
+        } catch (\Exception $e) {
+            // Catch any exceptions that might occur during logout
+            // Log the exception for debugging if necessary
+            // Redirect to the login page with a generic error message
+            return redirect('/login')->withErrors(['error' => 'An error occurred during logout. Please try again.']);
+        }
     }
 
 }
