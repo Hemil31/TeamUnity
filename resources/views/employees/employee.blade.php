@@ -26,7 +26,7 @@
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
-                             
+
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -37,18 +37,18 @@
                                     <td>{{ $item->first_name }}</td>
                                     <td>{{ $item->last_name }}</td>
                                     <td>{{ $item->email }}</td>
-                                   
-                                    
+
+
                                     <td>
                                         <div class="btn-group" aria-label="Actions">
-                                            <a href="{{ route('companies.edit', $item->id) }}"
+                                            <a href="{{ route('employee.edit', $item->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 <i class="fas fa-edit"></i> <!-- Edit Icon -->
                                             </a>
-                                            <a href="{{ route('companies.show', $item->id) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('employee.show', $item->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye"></i> <!-- View Icon -->
                                             </a>
-                                            <form action="{{ route('companies.destroy', $item->id) }}" method="POST">
+                                            <form action="{{ route('employee.destroy', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger"

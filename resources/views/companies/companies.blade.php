@@ -12,7 +12,7 @@
                     <i class="fas fa-plus"></i> <!-- Add Icon -->
                     Add Company Detail
                 </a>
-                <div class="table-responsive">
+                <div class="table">
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>

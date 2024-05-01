@@ -72,7 +72,14 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            // Find the company by ID
+            $data = Employee::find($id);
+            return view('employees.editemployee', compact('data'));
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while showing the edit company form: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -80,7 +87,24 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // Validate the request
+            $data = $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+            ]);
+
+            // Find the employee by ID and update
+            Employee::findOrFail($id)->update($data);
+
+            // Redirect to the employee index page with a success message
+            return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while updating the Employee: ' . $e->getMessage());
+        }
     }
 
     /**

@@ -114,7 +114,7 @@ class CompaniesController extends Controller
             }
 
             // Update the company with the validated data
-            Companies::where('id', $id)->update($validatedData);
+            Companies::findOrFail($id)->update($validatedData);
             // Redirect with success message
             return redirect()->route('companies.index')->with('success', 'Company updated successfully');
         } catch (\Exception $e) {
