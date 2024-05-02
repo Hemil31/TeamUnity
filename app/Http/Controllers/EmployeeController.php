@@ -6,6 +6,8 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Companies;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 
 class EmployeeController extends Controller
 {
@@ -16,7 +18,7 @@ class EmployeeController extends Controller
     {
         try {
             // Fetch all companies
-            $data = Employee::all();
+            $data = Employee::paginate(10);
             return view('employees.employee', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -75,6 +77,7 @@ class EmployeeController extends Controller
         try {
             // Find the company by ID
             $data = Employee::find($id);
+            Session::put('edit_employee_url', url()->previous());
             return view('employees.editemployee', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -100,7 +103,7 @@ class EmployeeController extends Controller
             Employee::findOrFail($id)->update($data);
 
             // Redirect to the employee index page with a success message
-            return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
+            return redirect(Session::pull('edit_employee_url'))->with('success', 'Employee updated successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the Employee: ' . $e->getMessage());
@@ -110,8 +113,25 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Request $request)
     {
-        //
+        try {
+            // Find the employee by ID and delete
+            Employee::findOrFail($id)->delete();
+
+            // Check the previous URL to determine the redirection
+            $previousUrl = URL::previous();
+
+            if (strpos($previousUrl, 'employee') !== false) {
+                // If the previous URL contains 'employee', redirect to the employee index page with a success message
+                return redirect()->route('employee.index')->with('success', 'Employee deleted successfully');
+            } else {
+                // Otherwise, redirect back with a success message
+                return redirect()->back()->with('success', 'Employee deleted successfully');
+            }
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while deleting the Employee: ' . $e->getMessage());
+        }
     }
 }

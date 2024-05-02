@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth; // Imported Auth facade
 class AdminController extends Controller
 {
     /**
-     * Display the admin panel.
+     * Display the admin panel login.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -38,13 +38,11 @@ class AdminController extends Controller
                 return redirect()->intended('/dashboard'); // Redirect to intended URL after successful login
             } else {
                 // Redirect back with error message if authentication fails
-                return redirect()->back()->withInput()->withErrors(['error' => 'Invalid email or password.']);
+                return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
             }
         } catch (\Exception $e) {
             // Catch any exceptions that might occur during authentication
-            // Log the exception for debugging if necessary
-            // Redirect back with a generic error message
-            return redirect()->back()->withInput()->withErrors(['error' => 'An error occurred during login. Please try again.']);
+            return redirect()->back()->withInput()->with('error', 'An error occurred during login. Please try again.');
         }
     }
 
@@ -62,9 +60,7 @@ class AdminController extends Controller
             return redirect('/login');
         } catch (\Exception $e) {
             // Catch any exceptions that might occur during logout
-            // Log the exception for debugging if necessary
-            // Redirect to the login page with a generic error message
-            return redirect('/login')->withErrors(['error' => 'An error occurred during logout. Please try again.']);
+            return redirect('/login')->with('error', 'An error occurred during logout. Please try again.');
         }
     }
 

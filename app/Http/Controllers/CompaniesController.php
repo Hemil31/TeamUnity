@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompaniesRequest;
 use App\Models\Companies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class CompaniesController extends Controller
 {
@@ -15,7 +17,7 @@ class CompaniesController extends Controller
     {
         try {
             // Fetch all companies
-            $data = Companies::all();
+            $data = Companies::Paginate(10);
             return view('companies.companies', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -77,6 +79,28 @@ class CompaniesController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        // Fetch the company by ID and show it
+        try {
+            $company = Companies::find($id);
+            $data = DB::table('companies')
+                ->join('employee', 'companies.id', '=', 'employee.company_id')
+                ->where('company_id', $id)
+                ->select('employee.*')
+                ->get();
+
+            return view('companies.showcompanies', compact('data', 'company'));
+        } catch (\Exception $e) {
+            // Handle the exception by redirecting back with an error message
+            return redirect()->back()->with('error', 'An error occurred while showing the company: ' . $e->getMessage());
+        }
+
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -84,6 +108,7 @@ class CompaniesController extends Controller
         try {
             // Find the company by ID
             $data = Companies::find($id);
+            Session::put('edit_update_url', url()->previous());
             return view('companies.editcompanies', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -116,7 +141,7 @@ class CompaniesController extends Controller
             // Update the company with the validated data
             Companies::findOrFail($id)->update($validatedData);
             // Redirect with success message
-            return redirect()->route('companies.index')->with('success', 'Company updated successfully');
+            return redirect(Session::pull('edit_update_url'))->with('success', 'Company updated successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the company: ' . $e->getMessage());
@@ -139,6 +164,11 @@ class CompaniesController extends Controller
         }
     }
 
+    /**
+     * Summary of storeLogo
+     * @param mixed $file
+     * @return string|null
+     */
     private function storeLogo($file)
     {
         try {

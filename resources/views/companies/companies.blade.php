@@ -44,7 +44,7 @@
                                     </td>
                                     <td>{{ $item->updated_at->format('d-m-Y') }}</td>
                                     <td>
-                                        <div class="btn-group"  aria-label="Actions">
+                                        <div class="btn-group" aria-label="Actions">
                                             <a href="{{ route('companies.edit', $item->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 <i class="fas fa-edit"></i> <!-- Edit Icon -->
@@ -66,6 +66,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $data->links() }}
                 </div>
             </div>
         </div>
