@@ -155,7 +155,9 @@ class CompaniesController extends Controller
     {
         try {
             // Find the company by ID and delete it
-            Companies::destroy($id);
+            $com = Companies::find($id);
+            // $com->softDeleteEmployees();
+            $com->delete();
             // Redirect with success message
             return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
         } catch (\Exception $e) {

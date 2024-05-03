@@ -66,13 +66,10 @@
                                     <td>{{ $item->phone }}</td>
                                     <td>
                                         <div class="btn-group" aria-label="Actions">
-                                            <a href="{{ route('employee.edit', $item->id) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('employee.edit', $item->id) }}"
+                                                class="btn btn-sm btn-primary">
                                                 <i class="fas fa-edit"></i> <!-- Edit Icon -->
                                             </a>
-                                            {{-- <button class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are you sure you want to delete?')">
-                                                <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
-                                            </button> --}}
                                             <form action="{{ route('employee.destroy', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')

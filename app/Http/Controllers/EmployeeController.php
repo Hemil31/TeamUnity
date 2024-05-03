@@ -8,18 +8,37 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            // Fetch all companies
-            $data = Employee::paginate(10);
-            return view('employees.employee', compact('data'));
+            // Fetch all employees
+            $data = Employee::query();
+            // Check if the request is AJAX and return the data in JSON format
+            if ($request->ajax()) {
+                return DataTables::of($data)
+                    ->addColumn('DT_RowIndex', function ($row) {
+                        return $row->id;
+                    })
+                    ->addColumn('action', function ($row) {
+                        $btn = '<a href="' . route('employee.edit', $row->id) . '" class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i>Edit</a>';
+                        $btn .= '<form action="' . route('employee.destroy', $row->id) . '" method="POST" class="d-inline">
+                                        ' . method_field('DELETE') . csrf_field() . '
+                                        <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this employee?\')"><i class="fas fa-trash-alt"></i> Delete</button>
+                                    </form>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            }
+            // Return the employee index view
+            return view('employees.employee');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while fetching the Employee: ' . $e->getMessage());

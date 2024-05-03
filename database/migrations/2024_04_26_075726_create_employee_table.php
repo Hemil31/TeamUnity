@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('last_name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->softDeletes();
             $table->timestamps();
             // Add foreign key constraint to company_id column in employee table referencing id column in companies table
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

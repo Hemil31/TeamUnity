@@ -32,11 +32,11 @@
                                         <img src="{{ asset('storage/logo/' . $item->logo) }}" alt="{{ $item->name }} Logo"
                                             class="img-fluid img-thumbnail" style="max-width: 100px; max-height: 100px;">
                                     </td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td><a href="{{ $item->website }}" target="_blank">{{ $item->website }}</a></td>
+                                    <td >{{ $item->name }}</td>
+                                    <td >{{ $item->email }}</td>
+                                    <td style="max-width: 100px; word-wrap: break-word;  "><a href="{{ $item->website }}" target="_blank">{{ $item->website }}</a></td>
                                     <td>
-                                        @if ($item->status)
+                                        @if ($item->status == 'active')
                                             <span class="badge badge-success">Active</span>
                                         @else
                                             <span class="badge badge-danger">Inactive</span>

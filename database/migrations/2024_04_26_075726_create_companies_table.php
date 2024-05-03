@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->string('logo')->nullable();
             $table->string('website')->nullable();
-            $table->string('status')->default('Active');
-            $table->timestamp('deleted_at')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

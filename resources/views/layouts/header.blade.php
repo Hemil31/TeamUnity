@@ -11,6 +11,9 @@
     <link href="{{ asset('asset/css/style.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -93,7 +96,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('employees*') ? 'active' : '' }}" href="{{ route('employee.index') }}">
+                            <a class="nav-link {{ Request::is('employees*') ? 'active' : '' }}"
+                                href="{{ route('employee.index') }}">
                                 <span class="icon">&#x1F465;</span> <span class="title">Employees</span>
                             </a>
                         </li>

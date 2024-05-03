@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     public $table = 'employee';
     protected $fillable = [
         'company_id',
@@ -17,8 +18,13 @@ class Employee extends Model
         'phone',
     ];
 
+
     public function company()
     {
-        return $this->belongsTo(Companies::class);
+        return $this->belongsTo(Companies::class, 'company_id');
     }
+    // public function softDeleteEmployees()
+    // {
+    //     $this->employees()->update(['deleted_at' => now()]);
+    // }
 }
