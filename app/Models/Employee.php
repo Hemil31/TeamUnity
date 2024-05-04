@@ -23,8 +23,4 @@ class Employee extends Model
     {
         return $this->belongsTo(Companies::class, 'company_id');
     }
-    // public function softDeleteEmployees()
-    // {
-    //     $this->employees()->update(['deleted_at' => now()]);
-    // }
 }

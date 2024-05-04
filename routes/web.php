@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\DashboradController;
 use App\Http\Controllers\EmployeeController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
@@ -19,10 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AdminController::class, 'index']);
 Route::post('/login', [AdminController::class, 'login'])->name('login');
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
+Route::get('/dashboard', [DashboradController::class, 'index'])->name('dashboard');
 Route::resource('companies', CompaniesController::class);
 Route::resource('employee', EmployeeController::class);
 

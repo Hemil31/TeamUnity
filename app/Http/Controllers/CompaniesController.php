@@ -154,10 +154,13 @@ class CompaniesController extends Controller
     public function destroy(string $id)
     {
         try {
-            // Find the company by ID and delete it
-            $com = Companies::find($id);
-            // $com->softDeleteEmployees();
-            $com->delete();
+            // Find the company by ID
+            $company = Companies::findOrFail($id);
+            // Soft delete associated employees
+            $company->employees()->delete();
+            // Soft delete the company
+            $company->delete();
+
             // Redirect with success message
             return redirect()->route('companies.index')->with('success', 'Company deleted successfully');
         } catch (\Exception $e) {
