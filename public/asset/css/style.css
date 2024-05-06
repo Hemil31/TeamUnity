@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.footer {
+    width: 100%;
+    background-color: #343a40;
+    /* Dark background color */
+    color: #fff;
+    /* Light text color */
+    padding: 20px;
+    /* Adjust spacing as needed */
+}
+
+.content {
+    min-height: calc(100% - 100px);
+    /* Subtract footer height */
+    /* Make sure to add overflow-y: auto; to enable scrolling when needed */
+    overflow-y: auto;
+}
+
+.sidebar {
+    position: fixed;
+    top: 56px;
+    /* Height of the navbar */
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    /* Ensure sidebar appears above content */
+    width: 240px;
+    padding: 20px;
+    background-color: #343a40;
+    color: #fff;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.sidebar .nav-item.active .nav-link {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.sidebar .nav-item .icon {
+    margin-right: 10px;
+}
+
+.sidebar .nav-item .title {
+    font-size: 16px;
+}
+
+.main-content {
+    margin-left: 240px;
+    /* Adjust margin to match sidebar width */
+    padding-top: 56px;
+    /* Height of the navbar */
+}
