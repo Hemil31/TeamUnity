@@ -50,8 +50,16 @@ class EmployeeController extends Controller
     {
         try {
             // Fetch all companies
-            $data = Companies::all();
-            return view('employees.addemployee', compact('data'));
+            // dd($request->id);
+
+            if ($request->has('id')) {
+                $data = Companies::find($request->id);
+                return view('employees.addemployee', compact('data'));
+            } else {
+                $data = Companies::all();
+                return view('employees.addemployee', compact('data'));
+            }
+            
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while fetching the Add Employee: ' . $e->getMessage());

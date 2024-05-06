@@ -39,7 +39,7 @@
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </form>
-                    <a href="{{ route('employee.create', $company->id) }}" class="btn btn-success">
+                    <a href="{{ route('employee.create',['id' => $company->id] ) }}" class="btn btn-success">
                         <i class="fas fa-plus"></i> <!-- Add Icon -->
                         Add Employee Detail
                     </a>

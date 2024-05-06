@@ -27,14 +27,22 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="company">Company</label>
-                                <select class="form-control" id="company_id" name="company_id"
-                                    value="{{ old('company_id') }}">
-                                    <option value="">Select Company</option>
-                                    @foreach ($data as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="company" id="">Company :</label>
+                                @if ($data instanceof \App\Models\Companies)
+                                    <select class="form-control" id="company_id" name="company_id"
+                                        value="{{ old('company_id') }}">
+                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                    </select>
+                                @else
+                                    <select class="form-control" id="company_id" name="company_id"
+                                        value="{{ old('company_id') }}">
+                                        <option value="">Select Company</option>
+                                        @foreach ($data as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+
                                 @error('company_id')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
