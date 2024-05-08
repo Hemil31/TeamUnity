@@ -24,6 +24,7 @@ Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [DashboradController::class, 'index'])->name('dashboard');
+    Route::get('/excel', [DashboradController::class, 'o'])->name('excel');
     Route::resource('companies', CompaniesController::class);
     Route::resource('employee', EmployeeController::class);
     Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');

@@ -23,7 +23,7 @@ class AuthValidation extends FormRequest
     {
         return [
             'email' => 'required|email|',
-            'password' => 'required|min:6'     
+            'password' => 'required|min:6',
         ];
     }
 }

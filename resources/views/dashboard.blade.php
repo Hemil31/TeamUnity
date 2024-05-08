@@ -30,6 +30,9 @@
             </div>
         </div>
     </div>
+    <div class="text-right mt-4">
+        <a href="{{ route('excel') }}" class="btn btn-success">Download Excel</a>
+    </div>
     <!-- Table to display companies and their total employees -->
     <div class="row mt-4">
         <div class="col-md-12">

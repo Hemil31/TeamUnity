@@ -68,11 +68,11 @@
                                                 <a href="{{ route('companies.edit', $item->id) }}"
                                                     class="btn btn-sm btn-primary">
                                                     <i class="fas fa-edit"></i> <!-- Edit Icon -->
-                                                </a>
+                                                </a>&nbsp;&nbsp;
                                                 <a href="{{ route('companies.show', $item->id) }}"
                                                     class="btn btn-sm btn-info">
                                                     <i class="fas fa-eye"></i> <!-- View Icon -->
-                                                </a>
+                                                </a>&nbsp;&nbsp;
                                                 <form action="{{ route('companies.destroy', $item->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')

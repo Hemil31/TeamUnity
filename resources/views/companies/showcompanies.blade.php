@@ -39,10 +39,14 @@
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </form>
-                    <a href="{{ route('employee.create',['id' => $company->id] ) }}" class="btn btn-success">
+                    <a href="{{ route('employee.create', ['id' => $company->id]) }}" class="btn btn-success">
                         <i class="fas fa-plus"></i> <!-- Add Icon -->
                         Add Employee Detail
                     </a>
+                    &nbsp;
+                    &nbsp;
+                    <a href="{{ route('excel', ['id' => $company->id]) }}" class="btn btn-success">Download Excel</a>
+
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -69,7 +73,7 @@
                                             <a href="{{ route('employee.edit', $item->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 <i class="fas fa-edit"></i> <!-- Edit Icon -->
-                                            </a>
+                                            </a>&nbsp;
                                             <form action="{{ route('employee.destroy', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
