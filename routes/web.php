@@ -17,11 +17,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [AdminController::class, 'index']);
-Route::post('/login', [AdminController::class, 'login'])->name('login');
+Route::get('/login', [AdminController::class, 'index'])->name('login');
+Route::post('/login', [AdminController::class, 'login'])->name('login.post');
 Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
-Route::get('/dashboard', [DashboradController::class, 'index'])->name('dashboard');
-Route::resource('companies', CompaniesController::class);
-Route::resource('employee', EmployeeController::class);
-Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');
 
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/', [DashboradController::class, 'index'])->name('dashboard');
+    Route::resource('companies', CompaniesController::class);
+    Route::resource('employee', EmployeeController::class);
+    Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');
+});

@@ -35,7 +35,7 @@ class AdminController extends Controller
 
             // Try to authenticate the user
             if (Auth::attempt($credentials)) {
-                return redirect()->intended('/dashboard'); // Redirect to intended URL after successful login
+                return redirect()->intended('/'); // Redirect to intended URL after successful login
             } else {
                 // Redirect back with error message if authentication fails
                 return redirect()->back()->withInput()->with('error', 'Invalid email or password.');

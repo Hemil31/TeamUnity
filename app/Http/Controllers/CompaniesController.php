@@ -117,13 +117,7 @@ class CompaniesController extends Controller
         // Fetch the company by ID and show it
         try {
             $company = Companies::find($id);
-            $data = DB::table('companies')
-                ->join('employee', 'companies.id', '=', 'employee.company_id')
-                ->where('company_id', $id)
-                ->whereNull('employee.deleted_at')
-                ->select('employee.*')
-                ->get();
-
+            $data = Companies::find($id)->employees;
             return view('companies.showcompanies', compact('data', 'company'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
