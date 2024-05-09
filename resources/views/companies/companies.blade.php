@@ -8,10 +8,9 @@
         <div class="row">
             <div class="col">
                 <div class="mb-3 d-flex">
-                    <form action="" method="GET" class="form-inline flex-grow-1 mr-2">
+                    <form action="{{ route('companies.index') }}" method="GET" class="form-inline flex-grow-1 mr-2">
                         <div class="form-group flex-grow-1">
-                            <input type="text" name="query" class="form-control mr-2 w-30"
-                                placeholder="Search by name or email">
+                            <input type="text" name="search" id="search" class="form-control mr-2 w-30" placeholder="Search by name, email, or website" value="{{old('search')}}">
                             <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </form>
@@ -44,58 +43,66 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
+                            @if ($data->isempty())
                                 <tr>
-                                    <td style="width: 120px;">
-                                        <img src="{{ asset('storage/logo/' . $item->logo) }}" alt="{{ $item->name }} Logo"
-                                            class="img-fluid img-thumbnail" style="max-width: 100px; max-height: 100px;">
-                                    </td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td style="max-width: 100px; word-wrap: break-word;  "><a href="{{ $item->website }}"
-                                            target="_blank">{{ $item->website }}</a></td>
-                                    <td>
-                                        @if ($item->status == 'active')
-                                            <span class="badge badge-success">Active</span>
-                                        @else
-                                            <span class="badge badge-danger">Inactive</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->updated_at->format('d-m-Y') }}</td>
-                                    <td>
-                                        @if ($item->status == 'active')
-                                            <div class="btn-group" aria-label="Actions">
-                                                <a href="{{ route('companies.edit', $item->id) }}"
-                                                    class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-edit"></i> <!-- Edit Icon -->
-                                                </a>&nbsp;&nbsp;
-                                                <a href="{{ route('companies.show', $item->id) }}"
-                                                    class="btn btn-sm btn-info">
-                                                    <i class="fas fa-eye"></i> <!-- View Icon -->
-                                                </a>&nbsp;&nbsp;
-                                                <form action="{{ route('companies.destroy', $item->id) }}" method="POST">
+                                    <td colspan="7" class="text-center">No Data Found</td>
+                                </tr>
+                            @else
+                                @foreach ($data as $item)
+                                    <tr>
+                                        <td style="width: 120px;">
+                                            <img src="{{ asset('storage/logo/' . $item->logo) }}"
+                                                alt="{{ $item->name }} Logo" class="img-fluid img-thumbnail"
+                                                style="max-width: 100px; max-height: 100px;">
+                                        </td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td style="max-width: 100px; word-wrap: break-word;  "><a
+                                                href="{{ $item->website }}" target="_blank">{{ $item->website }}</a></td>
+                                        <td>
+                                            @if ($item->status == 'active')
+                                                <span class="badge badge-success">Active</span>
+                                            @else
+                                                <span class="badge badge-danger">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->updated_at->format('d-m-Y') }}</td>
+                                        <td>
+                                            @if ($item->status == 'active')
+                                                <div class="btn-group" aria-label="Actions">
+                                                    <a href="{{ route('companies.edit', $item->id) }}"
+                                                        class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                                    </a>&nbsp;&nbsp;
+                                                    <a href="{{ route('companies.show', $item->id) }}"
+                                                        class="btn btn-sm btn-info">
+                                                        <i class="fas fa-eye"></i> <!-- View Icon -->
+                                                    </a>&nbsp;&nbsp;
+                                                    <form action="{{ route('companies.destroy', $item->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            onclick="return confirm('Are you sure you want to delete?')">
+                                                            <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                <form action="{{ route('companies.restore', $item->id) }}" method="POST">
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"
-                                                        onclick="return confirm('Are you sure you want to delete?')">
-                                                        <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-sm btn-success"
+                                                        onclick="return confirm('Are you sure you want to restore?')">
+                                                        <i class="fas fa-undo"></i> <!-- Restore Icon -->
+                                                        Restore
                                                     </button>
                                                 </form>
-                                            </div>
-                                        @else
-                                            <form action="{{ route('companies.restore', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn btn-sm btn-success"
-                                                    onclick="return confirm('Are you sure you want to restore?')">
-                                                    <i class="fas fa-undo"></i> <!-- Restore Icon -->
-                                                    Restore
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     {{ $data->links() }}

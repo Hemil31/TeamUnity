@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\UpdateEmployee;
 use App\Models\Companies;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class EmployeeController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
+
             // Return the employee index view
             return view('employees.employee');
         } catch (\Exception $e) {
@@ -52,14 +54,13 @@ class EmployeeController extends Controller
             if ($request->has('id')) {
                 // Find the company by ID
                 $data = Companies::find($request->id);
-                // Return the Add Employee view with the company data
-                return view('employees.addemployee', compact('data'));
             } else {
                 // Fetch all companies
                 $data = Companies::all();
-                // Return the Add Employee view
-                return view('employees.addemployee', compact('data'));
             }
+            // Return the view with data.
+            return view('employees.addemployee', compact('data'));
+
 
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -72,13 +73,11 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
-
         try {
             // Validate the request
             $data = $request->validated();
             // Create a new employee
             Employee::create($data);
-
             // Redirect to the employee index page with a success message
             return redirect()->route('employee.index')->with('success', 'Employee created successfully');
         } catch (\Exception $e) {
@@ -101,9 +100,10 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         try {
+
             // Find the company by ID
             $data = Employee::find($id);
-            Session::put('edit_employee_url', url()->previous());
+            // Return the view with the company data
             return view('employees.editemployee', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -114,22 +114,16 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateEmployee $request, string $id)
     {
         try {
-            // Validate the request
-            $data = $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'email' => 'required',
-                'phone' => 'required',
-            ]);
 
+            // Validate the request
+            $data = $request->validated();
             // Find the employee by ID and update
             Employee::findOrFail($id)->update($data);
-
             // Redirect to the employee index page with a success message
-            return redirect(Session::pull('edit_employee_url'))->with('success', 'Employee updated successfully');
+            return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the Employee: ' . $e->getMessage());

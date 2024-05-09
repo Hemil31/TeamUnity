@@ -42,7 +42,7 @@ class AdminController extends Controller
             }
         } catch (\Exception $e) {
             // Catch any exceptions that might occur during authentication
-            return redirect()->back()->withInput()->with('error', 'An error occurred during login. Please try again.');
+            return redirect()->back()->with('error', 'An error occurred during login. Please try again.' . $e->getMessage());
         }
     }
 
@@ -60,8 +60,7 @@ class AdminController extends Controller
             return redirect('/login');
         } catch (\Exception $e) {
             // Catch any exceptions that might occur during logout
-            return redirect('/login')->with('error', 'An error occurred during logout. Please try again.');
+            return redirect()->back()->with('error', 'An error occurred during logout. Please try again.' . $e->getMessage());
         }
     }
-
 }

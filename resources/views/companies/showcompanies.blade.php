@@ -61,31 +61,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data as $item)
+                            @if ($data->isEmpty())
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->first_name }}</td>
-                                    <td>{{ $item->last_name }}</td>
-                                    <td>{{ $item->email }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>
-                                        <div class="btn-group" aria-label="Actions">
-                                            <a href="{{ route('employee.edit', $item->id) }}"
-                                                class="btn btn-sm btn-primary">
-                                                <i class="fas fa-edit"></i> <!-- Edit Icon -->
-                                            </a>&nbsp;
-                                            <form action="{{ route('employee.destroy', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete?')">
-                                                    <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <td colspan="6" class="text-center">No data found</td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach ($data as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->first_name }}</td>
+                                        <td>{{ $item->last_name }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->phone }}</td>
+                                        <td>
+                                            <div class="btn-group" aria-label="Actions">
+                                                <a href="{{ route('employee.edit', $item->id) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                                </a>&nbsp;
+                                                <form action="{{ route('employee.destroy', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete?')">
+                                                        <i class="fas fa-trash-alt"></i> <!-- Delete Icon -->
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
                         </tbody>
                     </table>
                 </div>

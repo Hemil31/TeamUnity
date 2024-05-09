@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompaniesRequest extends FormRequest
+class UpdateCompany extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,18 @@ class CompaniesRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,svg|dimensions:min_width=100,min_height=100',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|dimensions:min_width=100,min_height=100',
             'website' => 'required|url|max:255',
         ];
     }
+
+        public function messages()
+    {
+        return [
+            'name.unique' => 'The company name is already taken.',
+            'email.unique' => 'The email address is already registered.',
+            // Other custom messages...
+        ];
+    }
+
 }

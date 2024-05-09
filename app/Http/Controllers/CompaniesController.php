@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompaniesRequest;
+use App\Http\Requests\UpdateCompany;
 use App\Mail\RegisterCompany;
 use App\Models\Companies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use URL;
 
 class CompaniesController extends Controller
 {
@@ -132,9 +134,10 @@ class CompaniesController extends Controller
     public function edit(string $id)
     {
         try {
+
             // Find the company by ID
             $data = Companies::find($id);
-            Session::put('edit_update_url', url()->previous());
+            // Return the view with the company data
             return view('companies.editcompanies', compact('data'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
@@ -145,16 +148,11 @@ class CompaniesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCompany $request, string $id)
     {
         try {
             // Validate the request data
-            $validatedData = $request->validate([
-                'name' => 'required',
-                'email' => 'required|email',
-                'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'website' => 'required'
-            ]);
+            $validatedData = $request->validated();
 
             // Check if logo file is present in the request
             if ($request->hasFile('logo')) {
@@ -166,8 +164,10 @@ class CompaniesController extends Controller
 
             // Update the company with the validated data
             Companies::findOrFail($id)->update($validatedData);
-            // Redirect with success message
-            return redirect(Session::pull('edit_update_url'))->with('success', 'Company updated successfully');
+            // Redirect with success message.
+
+            return redirect()->route('companies.index')->with('success', 'Company updated successfully');
+
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the company: ' . $e->getMessage());
