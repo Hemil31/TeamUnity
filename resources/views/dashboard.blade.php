@@ -50,12 +50,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $company)
+                                @if ($data->isempty())
                                     <tr>
-                                        <td>{{ $company->name }}</td>
-                                        <td>{{ $company->employees->count() }}</td>
+                                        <td colspan="2" class="text-center">No companies found</td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($data as $company)
+                                        @if (!$company->employees->count() == 0)
+                                            <tr>
+                                                <td>{{ $company->name }}</td>
+                                                <td>{{ $company->employees->count() }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                @endif
+
                             </tbody>
                         </table>
                     </div>

@@ -157,22 +157,35 @@ class CompaniesController extends Controller
             // Check if logo file is present in the request
             if ($request->hasFile('logo')) {
                 // Store the uploaded logo file and get the file name to store in the database
-                $fileNameToStore = $this->storeLogo($request->file('logo'));
-                // Add the file name to the validated data
-                $validatedData['logo'] = $fileNameToStore;
+                $validatedData['logo'] = $this->storeLogo($request->file('logo'));
+            }
+
+            // Check if the name or email is being changed to one that already exists for another company
+            $existingCompany = Companies::where('id', '!=', $id)
+                ->where(function ($query) use ($validatedData) {
+                    $query->where('name', $validatedData['name'])
+                        ->orWhere('email', $validatedData['email']);
+                })
+                ->first();
+
+            if ($existingCompany) {
+                $errorMsg = $existingCompany->name === $validatedData['name']
+                    ? 'Company with the same name already exists.'
+                    : 'Company with the same email already exists.';
+                return redirect()->back()->with('success', $errorMsg);
             }
 
             // Update the company with the validated data
             Companies::findOrFail($id)->update($validatedData);
+
             // Redirect with success message.
-
             return redirect()->route('companies.index')->with('success', 'Company updated successfully');
-
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the company: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -56,9 +56,8 @@ class DashboradController extends Controller
                 ]);
             }
         }
-
+        // Set the filename for the CSV file
         $filename = 'employees.csv';
-
         // Return the CSV file as a response
         return response()->streamDownload(function () use ($csv) {
             echo $csv->getContent();
@@ -67,9 +66,4 @@ class DashboradController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
     }
-
-
-
-
-
 }

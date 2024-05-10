@@ -21,10 +21,14 @@ class EmployeeController extends Controller
         try {
             // Fetch all employees
             $data = Employee::query();
+
             // Check if the request is AJAX and return the data in JSON format
             if ($request->ajax()) {
                 return DataTables::of($data)
                     ->addindexColumn()
+                    ->addColumn('company', function ($row) {
+                        return $row->company->name;
+                    })
                     ->addColumn('action', function ($row) {
                         $btn = '<a href="' . route('employee.edit', $row->id) . '" class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i>Edit</a>';
                         $btn .= '<form action="' . route('employee.destroy', $row->id) . '" method="POST" class="d-inline">
@@ -76,8 +80,16 @@ class EmployeeController extends Controller
         try {
             // Validate the request
             $data = $request->validated();
+
+            // Check if the email already exists
+            $existingEmployee = Employee::where('email', $data['email'])->first();
+            if ($existingEmployee) {
+                return redirect()->back()->withInput()->with('success', 'Email already exists');
+            }
+
             // Create a new employee
             Employee::create($data);
+
             // Redirect to the employee index page with a success message
             return redirect()->route('employee.index')->with('success', 'Employee created successfully');
         } catch (\Exception $e) {
@@ -100,7 +112,6 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         try {
-
             // Find the company by ID
             $data = Employee::find($id);
             // Return the view with the company data
@@ -117,11 +128,19 @@ class EmployeeController extends Controller
     public function update(UpdateEmployee $request, string $id)
     {
         try {
+            $emp = Employee::findOrFail($id);
 
             // Validate the request
             $data = $request->validated();
-            // Find the employee by ID and update
-            Employee::findOrFail($id)->update($data);
+
+            // Check if the email already exists
+            $existingEmployee = Employee::where('email', $data['email'])->where('id', '!=', $id)->first();
+            if ($existingEmployee) {
+                return redirect()->back()->withInput()->with('success', 'Email already exists');
+            }
+            // Update the employee data
+            $emp->update($data);
+
             // Redirect to the employee index page with a success message
             return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
         } catch (\Exception $e) {

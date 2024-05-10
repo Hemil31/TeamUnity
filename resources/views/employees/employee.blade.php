@@ -17,6 +17,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Sr</th>
+                                <th scope="col">Company</th>
                                 <th scope="col">First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
