@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use URL;
+use Yajra\DataTables\DataTables;
 
 class CompaniesController extends Controller
 {
@@ -114,13 +115,28 @@ class CompaniesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         // Fetch the company by ID and show it
         try {
             $company = Companies::find($id);
-            $data = Companies::find($id)->employees;
-            return view('companies.showcompanies', compact('data', 'company'));
+
+            $data = $company->employees;
+            if ($request->ajax()) {
+                return DataTables::of($data)
+                    ->addindexColumn()
+                    ->addColumn('action', function ($row) {
+                        $btn = '<a href="' . route('employee.edit', $row->id) . '" class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i>Edit</a>';
+                        $btn .= '<form action="' . route('employee.destroy', $row->id) . '" method="POST" class="d-inline">
+                                    ' . method_field('DELETE') . csrf_field() . '
+                                    <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this employee?\')"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </form>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            }
+            return view('companies.showcompanies', compact('company'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while showing the company: ' . $e->getMessage());
@@ -134,7 +150,13 @@ class CompaniesController extends Controller
     public function edit(string $id)
     {
         try {
+            $previousUrl = url()->previous();
+            $currentUrl = url()->current();
 
+            // Check if previous and current URLs are different
+            if ($previousUrl !== $currentUrl) {
+                Session::put('previous_edit_url', $previousUrl);
+            }
             // Find the company by ID
             $data = Companies::find($id);
             // Return the view with the company data
@@ -179,7 +201,7 @@ class CompaniesController extends Controller
             Companies::findOrFail($id)->update($validatedData);
 
             // Redirect with success message.
-            return redirect()->route('companies.index')->with('success', 'Company updated successfully');
+            return redirect(Session::get('previous_edit_url', route('companies.index')))->with('success', 'Company updated successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the company: ' . $e->getMessage());

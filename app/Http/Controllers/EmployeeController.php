@@ -112,6 +112,12 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         try {
+            $previousUrl = url()->previous();
+            $currentUrl = url()->current();
+            // Check if previous and current URLs are different
+            if ($previousUrl !== $currentUrl) {
+                Session::put('previous_edit_url', $previousUrl);
+            }
             // Find the company by ID
             $data = Employee::find($id);
             // Return the view with the company data
@@ -129,7 +135,6 @@ class EmployeeController extends Controller
     {
         try {
             $emp = Employee::findOrFail($id);
-
             // Validate the request
             $data = $request->validated();
 
@@ -140,9 +145,8 @@ class EmployeeController extends Controller
             }
             // Update the employee data
             $emp->update($data);
-
             // Redirect to the employee index page with a success message
-            return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
+            return redirect(Session::get('previous_edit_url', route('employee.index')))->with('success', 'Employee updated successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the Employee: ' . $e->getMessage());

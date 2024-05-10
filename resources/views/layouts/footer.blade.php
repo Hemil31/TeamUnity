@@ -28,6 +28,7 @@
     });
 </script>
 <script>
+    // DataTable script for displaying data in a table format   
     $(document).ready(function () {
         $('#employee-table').DataTable({
             processing: true,
@@ -43,7 +44,7 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
-    });
+    });    
 </script>
 </body>
 
