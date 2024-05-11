@@ -48,13 +48,12 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>Welcome to Brainvire Info Tech!</h1>
+      <h1>Welcome to Team Unity!</h1>
     </div>
     <div class="content">
       <p>Dear {{$maildata['name']}},</p>
       <p>We are delighted to welcome you as a new company registrant in our admin panel.</p>
       <p>Please proceed to your account:</p>
-      <a href="#" class="button">Login to Admin Panel</a>
     </div>
     <div class="social-icons">
       <a href="https://facebook.com/" title="Facebook"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1280px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook" width="32"></a>
