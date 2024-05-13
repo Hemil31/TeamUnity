@@ -34,6 +34,7 @@
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
+                                <th scope="col">S.No</th>
                                 <th scope="col">Logo</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
@@ -46,6 +47,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
+                                    <td>{{ $result++ }}</td>
                                     <td style="width: 120px;">
                                         <img src="{{ asset('storage/logo/' . $item->logo) }}" alt="{{ $item->name }} Logo"
                                             class="img-fluid img-thumbnail" style="max-width: 100px; max-height: 100px;">

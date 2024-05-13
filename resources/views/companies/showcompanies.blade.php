@@ -34,7 +34,7 @@
                 <div class="mb-3 d-flex">
 
                     <div class="form-group flex-grow-1">
-                        <a href="{{ route('employee.create', ['id' => $company->id]) }}" class="btn btn-success">
+                        <a href="{{ route('employee.create', ['id' => encrypt($company->id)]) }}" class="btn btn-success">
                             <i class="fas fa-plus"></i> <!-- Add Icon -->
                             Add Employee Detail
                         </a>
@@ -42,7 +42,7 @@
                     @if ($company->employees->count() > 0)
                         <a href="{{ route('excel', ['id' => $company->id]) }}"
                             class="btn btn-success form-group flex-grow">Download Excel</a>
-                    @endif  
+                    @endif
 
                 </div>
                 <div class="table-responsive">

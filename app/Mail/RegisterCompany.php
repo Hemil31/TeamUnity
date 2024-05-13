@@ -17,7 +17,7 @@ class RegisterCompany extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($maildata)
+    public function __construct(array  $maildata)
     {
         $this->maildata = $maildata;
     }

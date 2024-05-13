@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CompaniesRequest;
 use App\Http\Requests\UpdateCompany;
+use App\Jobs\EmailNotification;
 use App\Mail\RegisterCompany;
 use App\Models\Companies;
 use Illuminate\Http\Request;
@@ -21,12 +22,13 @@ class CompaniesController extends Controller
     public function index(Request $request)
     {
         try {
+
             // Initialize the query
             $query = Companies::query();
 
             // Check if search query is provided
-            if ($request->has('search')) {
-                $search = $request->input('search');
+            if ($request->has('query')) {
+                $search = $request->input('query');
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%$search%")
                         ->orWhere('email', 'like', "%$search%")
@@ -44,9 +46,10 @@ class CompaniesController extends Controller
 
             // Fetch all companies with pagination
             $data = $query->withTrashed()->paginate(10);
+            $result = $data->firstItem();
 
             // Return the view with data
-            return view('companies.companies', compact('data'));
+            return view('companies.companies', compact('data', 'result'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while fetching the companies: ' . $e->getMessage());
@@ -93,12 +96,12 @@ class CompaniesController extends Controller
                 // Add the file name to the validated data
                 $validatedData['logo'] = $fileNameToStore;
             }
-            // // Send email to the user with the company name
-            // $maildata = [
-            //     'name' => " " . $validatedData['name'] . " ",
-            // ];
-            // // Send email to the user
-            // Mail::to($validatedData['email'])->send(new RegisterCompany($maildata));
+            
+            // Send email to the user
+            EmailNotification::dispatch([
+                'email' => $validatedData['email'],
+                'name' => $validatedData['name']
+            ])->onQueue('emails');
 
             // Create a new company with the validated data
             Companies::create($validatedData);

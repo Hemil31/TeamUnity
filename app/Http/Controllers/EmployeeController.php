@@ -55,9 +55,21 @@ class EmployeeController extends Controller
     public function create(Request $request)
     {
         try {
+
+
+            $previousUrl = url()->previous();
+            $currentUrl = url()->current();
+            // Check if previous and current URLs are different.
+            if ($request->has('id')) {
+                $id = decrypt($request->id); // Decrypt the ID (if encrypted
+                Session::put('previous_add', 'http://127.0.0.1:8000/companies/' . $id);
+            } elseif ($previousUrl !== $currentUrl) {
+                Session::put('previous_add', $previousUrl);
+            }
+            // Check if the request has an ID
             if ($request->has('id')) {
                 // Find the company by ID
-                $data = Companies::find($request->id);
+                $data = Companies::find(decrypt($request->id));
             } else {
                 // Fetch all companies
                 $data = Companies::all();
@@ -90,8 +102,10 @@ class EmployeeController extends Controller
             // Create a new employee
             Employee::create($data);
 
+
             // Redirect to the employee index page with a success message
-            return redirect()->route('employee.index')->with('success', 'Employee created successfully');
+            // return redirect()->route('employee.index')->with('success', 'Employee created successfully');
+            return redirect(session('previous_add', route('employee.index')))->with('success', 'Employee created successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while creating the Employee: ' . $e->getMessage());
@@ -116,7 +130,7 @@ class EmployeeController extends Controller
             $currentUrl = url()->current();
             // Check if previous and current URLs are different
             if ($previousUrl !== $currentUrl) {
-                Session::put('previous_edit_url', $previousUrl);
+                Session::put('previous_edit', $previousUrl);
             }
             // Find the company by ID
             $data = Employee::find($id);
@@ -146,7 +160,7 @@ class EmployeeController extends Controller
             // Update the employee data
             $emp->update($data);
             // Redirect to the employee index page with a success message
-            return redirect(Session::get('previous_edit_url', route('employee.index')))->with('success', 'Employee updated successfully');
+            return redirect(Session::get('previous_edit', route('employee.index')))->with('success', 'Employee updated successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while updating the Employee: ' . $e->getMessage());
