@@ -132,7 +132,7 @@
                     valid = false;
                 } else if (!isValidPhone(phone)) {
                     document.getElementById('phone').classList.add('is-invalid');
-                    document.getElementById('phoneError').textContent = 'Invalid phone number format';
+                    document.getElementById('phoneError').textContent = 'Invalid phone number format (10 digits)';
                     valid = false;
                 }
 

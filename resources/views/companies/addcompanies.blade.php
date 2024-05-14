@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Company')
 @section('page-title', 'Add Company')
-
 @section('content')
     <section>
         <div class="container">

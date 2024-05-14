@@ -17,7 +17,7 @@ use Yajra\DataTables\DataTables;
 class CompaniesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Companies resource with pagination and search.
      */
     public function index(Request $request)
     {
@@ -57,7 +57,7 @@ class CompaniesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource in storage with validation rules.
      */
     public function create()
     {
@@ -72,6 +72,8 @@ class CompaniesController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param \App\Http\Requests\CompaniesRequest $request The request object
+     * @return \Illuminate\Http\RedirectResponse Redirects back with a success or error message.
      */
     public function store(CompaniesRequest $request)
     {
@@ -80,13 +82,18 @@ class CompaniesController extends Controller
             $validatedData = $request->validated();
 
             // Check if a company with the same name or email already exists
-            $company = Companies::where('name', $validatedData['name'])
-                ->orWhere('email', $validatedData['email'])
+            $existingCompany = Companies::where(function ($query) use ($validatedData) {
+                $query->where('name', $validatedData['name'])
+                    ->orWhere('email', $validatedData['email']);
+            })
                 ->first();
 
-            if ($company) {
-                // If company already exists, redirect back with an error message
-                return redirect()->back()->withInput()->with('error', 'The company with the given name or email is already registered.');
+            // If a company with the same name or email already exists, redirect back with an error message
+            if ($existingCompany) {
+                $errorMsg = $existingCompany->name === $validatedData['name']
+                    ? 'Company with the same name already exists.'
+                    : 'Company with the same email already exists.';
+                return redirect()->back()->withInput()->with('success', $errorMsg);
             }
 
             // Check if logo file is present in the request
@@ -96,7 +103,7 @@ class CompaniesController extends Controller
                 // Add the file name to the validated data
                 $validatedData['logo'] = $fileNameToStore;
             }
-            
+
             // Send email to the user
             EmailNotification::dispatch([
                 'email' => $validatedData['email'],
@@ -117,15 +124,20 @@ class CompaniesController extends Controller
 
     /**
      * Display the specified resource.
+     * @param string $id The ID of the company to show.
+     * @param \Illuminate\Http\Request $request The request object
      */
     public function show(string $id, Request $request)
     {
-        // Fetch the company by ID and show it
+
         try {
+            // Fetch the company by ID and show it
             $company = Companies::find($id);
 
+            // Fetch all employees of the company
             $data = $company->employees;
             if ($request->ajax()) {
+                // Return the employees data as a DataTable if the request is AJAX based on the company ID provided
                 return DataTables::of($data)
                     ->addindexColumn()
                     ->addColumn('action', function ($row) {
@@ -139,20 +151,22 @@ class CompaniesController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
+            // Return the view with the company data
             return view('companies.showcompanies', compact('company'));
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
             return redirect()->back()->with('error', 'An error occurred while showing the company: ' . $e->getMessage());
         }
-
     }
 
     /**
      * Show the form for editing the specified resource.
+     * @param string $id The ID of the company to edit.
      */
     public function edit(string $id)
     {
         try {
+            // Get the previous and current URLs
             $previousUrl = url()->previous();
             $currentUrl = url()->current();
 
@@ -170,8 +184,12 @@ class CompaniesController extends Controller
         }
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * Summary of update
+     * @param \App\Http\Requests\UpdateCompany $request The request object
+     * @param string $id The ID of the company to delete.
+     * @return mixed|\Illuminate\Http\RedirectResponse
      */
     public function update(UpdateCompany $request, string $id)
     {
@@ -193,6 +211,7 @@ class CompaniesController extends Controller
                 })
                 ->first();
 
+            // If a company with the same name or email already exists, redirect back with an error message
             if ($existingCompany) {
                 $errorMsg = $existingCompany->name === $validatedData['name']
                     ? 'Company with the same name already exists.'
@@ -213,7 +232,10 @@ class CompaniesController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a company and its associated employees.
+     *
+     * @param string $id The ID of the company to delete.
+     * @return \Illuminate\Http\RedirectResponse Redirects back with a success or error message.
      */
     public function destroy(string $id)
     {
@@ -249,6 +271,7 @@ class CompaniesController extends Controller
             // Store the logo in the 'public/logo' directory
             $file->storeAs('public/logo', $fileNameToStore);
 
+            // Return the file name
             return $fileNameToStore;
         } catch (\Exception $e) {
             // Handle the exception
@@ -273,5 +296,4 @@ class CompaniesController extends Controller
             return redirect()->back()->with('error', 'An error occurred while restoring the company: ' . $e->getMessage());
         }
     }
-
 }

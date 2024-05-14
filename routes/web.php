@@ -19,13 +19,13 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/login', [AdminController::class, 'index'])->name('login');
 Route::post('/login', [AdminController::class, 'login'])->name('login.post');
-Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 
-
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboradController::class, 'index'])->name('dashboard');
-    Route::get('/excel', [DashboradController::class, 'o'])->name('excel');
+    Route::get('/excel', [DashboradController::class, 'excelDowload'])->name('excel');
     Route::resource('companies', CompaniesController::class);
     Route::resource('employee', EmployeeController::class);
     Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+
 });

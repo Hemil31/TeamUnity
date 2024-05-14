@@ -29,7 +29,7 @@ class UpdateCompany extends FormRequest
         ];
     }
 
-        public function messages()
+    public function messages()
     {
         return [
             'name.unique' => 'The company name is already taken.',

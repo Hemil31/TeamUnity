@@ -20,10 +20,11 @@ class EmployeeController extends Controller
     {
         try {
             // Fetch all employees
-            $data = Employee::query();
+            $data = Employee::latest()->get();
 
             // Check if the request is AJAX and return the data in JSON format
             if ($request->ajax()) {
+                // Return the data in DataTables format
                 return DataTables::of($data)
                     ->addindexColumn()
                     ->addColumn('company', function ($row) {
@@ -56,7 +57,7 @@ class EmployeeController extends Controller
     {
         try {
 
-
+            // Check if the request has an ID
             $previousUrl = url()->previous();
             $currentUrl = url()->current();
             // Check if previous and current URLs are different.
@@ -102,9 +103,7 @@ class EmployeeController extends Controller
             // Create a new employee
             Employee::create($data);
 
-
             // Redirect to the employee index page with a success message
-            // return redirect()->route('employee.index')->with('success', 'Employee created successfully');
             return redirect(session('previous_add', route('employee.index')))->with('success', 'Employee created successfully');
         } catch (\Exception $e) {
             // Handle the exception by redirecting back with an error message
