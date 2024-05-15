@@ -24,7 +24,7 @@ class CompaniesRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,svg|dimensions:min_width=100,min_height=100',
+            'logo' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100',
             'website' => 'required|url|max:255',
         ];
     }

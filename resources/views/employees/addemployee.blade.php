@@ -15,12 +15,18 @@
                                 <input type="text" class="form-control" id="first_name" name="first_name"
                                     value="{{ old('first_name') }}">
                                 <div class="invalid-feedback" id="firstNameError"></div>
+                                @error('first_name')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="last_name">Last Name</label>
                                 <input type="text" class="form-control" id="last_name" name="last_name"
                                     value="{{ old('last_name') }}">
                                 <div class="invalid-feedback" id="lastNameError"></div>
+                                @error('last_name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                             </div>
                             <div class="form-group">
                                 <label for="company_id">Company :</label>
@@ -42,18 +48,27 @@
                                     </select>
                                 @endif
                                 <div class="invalid-feedback" id="companyError"></div>
+                                @error('company_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     value="{{ old('email') }}">
                                 <div class="invalid-feedback" id="emailError"></div>
+                                @error('email')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone</label>
                                 <input type="tel" class="form-control" id="phone" name="phone"
                                     value="{{ old('phone') }}">
                                 <div class="invalid-feedback" id="phoneError"></div>
+                                @error('phone')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -132,7 +147,8 @@
                     valid = false;
                 } else if (!isValidPhone(phone)) {
                     document.getElementById('phone').classList.add('is-invalid');
-                    document.getElementById('phoneError').textContent = 'Invalid phone number format (10 digits)';
+                    document.getElementById('phoneError').textContent =
+                        'Invalid phone number format (10 digits)';
                     valid = false;
                 }
 

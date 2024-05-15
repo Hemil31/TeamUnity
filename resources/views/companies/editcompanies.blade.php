@@ -9,7 +9,8 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <br>
-                    <form action="{{ route('companies.update', $data->id) }}" method="POST" enctype="multipart/form-data" id="companyForm">
+                    <form action="{{ route('companies.update', $data->id) }}" method="POST" enctype="multipart/form-data"
+                        id="companyForm">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -17,7 +18,7 @@
                             <input type="text" name="name" id="name" class="form-control"
                                 value="{{ $data->name }}">
                             @error('name')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                             <span id="nameError" class="text-danger"></span>
                         </div>
@@ -26,7 +27,7 @@
                             <input type="email" name="email" id="email" class="form-control"
                                 value="{{ $data->email }}">
                             @error('email')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                             <span id="emailError" class="text-danger"></span>
                         </div>
@@ -34,7 +35,7 @@
                             <label for="logo">Logo (minimum 100x100)</label>
                             <input type="file" name="logo" id="logo" class="form-control-file">
                             @error('logo')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                             <span id="logoError" class="text-danger"></span>
                         </div>
@@ -43,7 +44,7 @@
                             <input type="text" name="website" id="website" class="form-control"
                                 value="{{ $data->website }}">
                             @error('website')
-                                <div class="alert alert-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                             <span id="websiteError" class="text-danger"></span>
                         </div>
@@ -87,15 +88,6 @@
                     valid = false;
                 }
 
-                // Check if logo is empty
-                // if (logo === '') {
-                //     document.getElementById('logoError').textContent = 'Logo is required';
-                //     valid = false;
-                // } else if (!isValidLogo(logo)) {
-                //     document.getElementById('logoError').textContent =
-                //         'Only jpg, jpeg, png files are allowed';
-                //     valid = false;
-                // }
 
                 // Check if website is empty and valid
                 if (website === '') {

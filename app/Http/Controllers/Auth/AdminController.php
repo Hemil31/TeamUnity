@@ -36,7 +36,7 @@ class AdminController extends Controller
                 return redirect()->intended('/')->with('success', 'You have successfully logged in.');
             } else {
                 // Redirect back with error message if authentication fails
-                return redirect()->back()->withInput()->with('error', 'Invalid email or password.');
+                return redirect()->back()->withInput()->with('success', 'Invalid email or password.');
             }
         } catch (\Exception $e) {
             // Catch any exceptions that might occur during authentication

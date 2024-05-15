@@ -14,23 +14,35 @@
                             <input type="text" name="name" id="name" class="form-control"
                                 value="{{ old('name') }}">
                             <span id="nameError" class="text-danger"></span>
+                            @error('name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" name="email" id="email" class="form-control"
                                 value="{{ old('email') }}">
                             <span id="emailError" class="text-danger"></span>
+                            @error('email')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="logo">Logo (minimum 100x100)</label>
                             <input type="file" name="logo" id="logo" class="form-control-file">
                             <span id="logoError" class="text-danger"></span>
+                            @error('logo')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="website">Website</label>
                             <input type="text" name="website" id="website" class="form-control"
                                 value="{{ old('website') }}">
                             <span id="websiteError" class="text-danger"></span>
+                            @error('website')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

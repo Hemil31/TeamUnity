@@ -25,5 +25,6 @@ class AuthValidation extends FormRequest
             'email' => 'required|email|',
             'password' => 'required|min:6',
         ];
+        
     }
 }

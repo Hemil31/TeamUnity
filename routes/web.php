@@ -27,5 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('employee', EmployeeController::class);
     Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');
     Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+});
 
+Route::fallback(function () {
+    return redirect('/');
 });
