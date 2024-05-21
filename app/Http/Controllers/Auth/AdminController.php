@@ -49,11 +49,13 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout(): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
         try {
             // Attempt to logout the user
             Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
             // Redirect to the login page after logout
             return redirect('/login')->with('success', 'You have successfully logged out.');
         } catch (\Exception $e) {

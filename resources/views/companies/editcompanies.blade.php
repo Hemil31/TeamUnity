@@ -32,7 +32,8 @@
                             <span id="emailError" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="logo">Logo (minimum 100x100)</label>
+                            <label for="logo">Logo (minimum 100x100)</label><br>
+                            <label for="logo">(optional)</label>
                             <input type="file" name="logo" id="logo" class="form-control-file">
                             @error('logo')
                                 <div class="text-danger">{{ $message }}</div>
