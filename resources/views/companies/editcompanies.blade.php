@@ -116,7 +116,7 @@
             }
 
             function isValidWebsite(website) {
-                var websitePattern = /^(https?:\/\/)?([\w-]+\.)+([a-zA-Z]{2,7})(\/\S*)?$/;
+                var websitePattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-._~:\/?#\[\]@!$&'()*+,;=]*)?$/;
                 return websitePattern.test(website);
             }
 

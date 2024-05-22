@@ -24,7 +24,7 @@ class CompaniesRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'logo' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100',
+            'logo' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100|max:3072',
             'website' => 'required|url|max:255',
         ];
     }
@@ -39,6 +39,7 @@ class CompaniesRequest extends FormRequest
             'logo.image' => 'Logo must be an image.',
             'logo.mimes' => 'Logo must be a file of type: jpeg, png, jpg.',
             'logo.dimensions' => 'Logo must be at least 100x100 pixels.',
+            'logo.max' => 'Logo must be less than 3MB.',
             'website.required' => 'Website is required.',
             'website.url' => 'Website must be a valid URL.',
             
