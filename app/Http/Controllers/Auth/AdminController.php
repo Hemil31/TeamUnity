@@ -8,11 +8,16 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Imported Auth facade
 
+
+/**
+ * AdminController class is responsible for handling
+ * The admin panel login and logout process.
+ */
 class AdminController extends Controller
 {
     /**
      * Display the admin panel login page.
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -28,18 +33,14 @@ class AdminController extends Controller
     public function login(AuthValidation $request): RedirectResponse
     {
         try {
-            // Attempt to retrieve email and password from the request
             $credentials = $request->only('email', 'password');
 
-            // Try to authenticate the user
             if (Auth::attempt($credentials)) {
                 return redirect()->intended('/')->with('success', 'You have successfully logged in.');
             } else {
-                // Redirect back with error message if authentication fails
                 return redirect()->back()->withInput()->with('success', 'Invalid email or password.');
             }
         } catch (\Exception $e) {
-            // Catch any exceptions that might occur during authentication
             return redirect()->back()->with('error', 'An error occurred during login. Please try again.' . $e->getMessage());
         }
     }
@@ -52,14 +53,11 @@ class AdminController extends Controller
     public function logout(Request $request): RedirectResponse
     {
         try {
-            // Attempt to logout the user
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            // Redirect to the login page after logout
             return redirect('/login')->with('success', 'You have successfully logged out.');
         } catch (\Exception $e) {
-            // Catch any exceptions that might occur during logout
             return redirect()->back()->with('error', 'An error occurred during logout. Please try again.' . $e->getMessage());
         }
     }
