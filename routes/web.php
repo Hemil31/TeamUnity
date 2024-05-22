@@ -20,17 +20,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [AdminController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [AdminController::class, 'login'])->name('login.post');
 
-Route::group(['middleware' => 'prevent-back-history'], function () {
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/', [DashboradController::class, 'index'])->name('dashboard');
-        Route::get('/excel', [DashboradController::class, 'excelDowload'])->name('excel');
-        Route::resource('companies', CompaniesController::class);
-        Route::resource('employee', EmployeeController::class);
-        Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');
-        Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
-    });
+Route::middleware(['auth','prevent-back-history'])->group(function () {
+    Route::get('/', [DashboradController::class, 'index'])->name('dashboard');
+    Route::get('/excel', [DashboradController::class, 'excelDowload'])->name('excel');
+    Route::resource('companies', CompaniesController::class);
+    Route::resource('employee', EmployeeController::class);
+    Route::put('/companies/{id}/restore', [CompaniesController::class, 'restore'])->name('companies.restore');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 });
-
 
 Route::fallback(function () {
     return redirect('/');
