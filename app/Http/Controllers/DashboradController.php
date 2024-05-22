@@ -41,7 +41,7 @@ class DashboradController extends Controller
             }
 
             // Group employees by company
-            $employeesByCompany = $employees->groupBy('company_id');
+            $empgrp = $employees->groupBy('company_id');
 
             // Create a CSV writer instance
             $csv = Writer::createFromString('');
@@ -50,7 +50,7 @@ class DashboradController extends Controller
             $csv->insertOne(['Company', 'ID', 'First Name', 'Last Name', 'Email', 'Phone']);
 
             // Loop through each company and its employees
-            foreach ($employeesByCompany as $companyId => $employees) {
+            foreach ($empgrp as $companyId => $employees) {
                 // Retrieve the company name
                 $company = Companies::find($companyId);
                 $companyName = $company ? $company->name : '';

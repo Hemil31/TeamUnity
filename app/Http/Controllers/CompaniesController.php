@@ -99,9 +99,7 @@ class CompaniesController extends Controller
             // Check if logo file is present in the request
             if ($request->hasFile('logo')) {
                 // Store the uploaded logo file and get the file name to store in the database
-                $fileNameToStore = $this->storeLogo($request->file('logo'));
-                // Add the file name to the validated data
-                $validatedData['logo'] = $fileNameToStore;
+                $validatedData['logo'] = $this->storeLogo($request->file('logo'));
             }
 
             // Send email to the user

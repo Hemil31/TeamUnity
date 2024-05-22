@@ -111,7 +111,7 @@
                 //     $('#errorModal').modal('hide');
                 // }, 1000);
             @endif
-        });
+        };
     </script>
     <script>
         function myFunction() {

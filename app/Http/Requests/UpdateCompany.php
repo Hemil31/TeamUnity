@@ -28,4 +28,18 @@ class UpdateCompany extends FormRequest
             'website' => 'required|url|max:255',
         ];
     }
+
+    public function messages(){
+        return [
+            'name.required' => 'Company name is required.',
+            'name.string' => 'Company name must be a string.',
+            'email.required' => 'Email is required.',
+            'email.email' => 'Email must be a valid email address.',
+            'logo.image' => 'Logo must be an image.',
+            'logo.mimes' => 'Logo must be a file of type: jpeg, png, jpg.',
+            'logo.dimensions' => 'Logo must be at least 100x100 pixels.',
+            'website.required' => 'Website is required.',
+            'website.url' => 'Website must be a valid URL.',
+        ];
+    }
 }
