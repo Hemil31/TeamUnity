@@ -63,7 +63,11 @@ class EmployeeController extends Controller
             // Check if previous and current URLs are different.
             if ($request->has('id')) {
                 $id = decrypt($request->id); // Decrypt the ID (if encrypted
-                Session::put('previous_add', 'http://127.0.0.1:8000/companies/' . $id);
+                if ($previousUrl === 'http://127.0.0.1:8000/companies/' . $id) {
+                    Session::put('previous_add', 'http://127.0.0.1:8000/companies/' . $id);
+                } else {
+                    Session::put('previous_add', 'http://teamunity.com/companies/' . $id);
+                }
             } elseif ($previousUrl !== $currentUrl) {
                 Session::put('previous_add', $previousUrl);
             }
