@@ -80,8 +80,7 @@ class CompaniesController extends Controller
             $existingCompany = Companies::where(function ($query) use ($validatedData) {
                 $query->where('name', $validatedData['name'])
                     ->orWhere('email', $validatedData['email']);
-            })
-                ->first();
+            })->first();
 
             if ($existingCompany) {
                 $errorMsg = $existingCompany->name === $validatedData['name']

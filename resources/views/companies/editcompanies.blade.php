@@ -14,6 +14,7 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
+                            <input type="hidden" id="formType" value="edit">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control"
                                 value="{{ $data->name }}">
@@ -56,74 +57,5 @@
             </div>
         </div>
     </section>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('companyForm').addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent form submission
-                // Validate inputs
-                var name = document.getElementById('name').value.trim();
-                var email = document.getElementById('email').value.trim();
-                // var logo = document.getElementById('logo').value.trim();
-                var website = document.getElementById('website').value.trim();
-
-                // Reset previous errors
-                document.getElementById('nameError').textContent = '';
-                document.getElementById('emailError').textContent = '';
-                // document.getElementById('logoError').textContent = '';
-                document.getElementById('websiteError').textContent = '';
-
-                var valid = true;
-
-                // Check if name is empty
-                if (name === '') {
-                    document.getElementById('nameError').textContent = 'Name is required';
-                    valid = false;
-                }
-
-                // Check if email is empty and valid
-                if (email === '') {
-                    document.getElementById('emailError').textContent = 'Email is required';
-                    valid = false;
-                } else if (!isValidEmail(email)) {
-                    document.getElementById('emailError').textContent = 'Invalid email format';
-                    valid = false;
-                }
-
-
-                // Check if website is empty and valid
-                if (website === '') {
-                    document.getElementById('websiteError').textContent = 'Website is required';
-                    valid = false;
-                } else if (!isValidWebsite(website)) {
-                    document.getElementById('websiteError').textContent = 'Invalid website format';
-                    valid = false;
-                }
-
-                // Submit form if all inputs are valid
-                if (valid) {
-                    this.submit();
-                }
-            });
-
-            function isValidName(name) {
-                var namePattern = /^[a-zA-Z]+$/;
-                return namePattern.test(name);
-            }
-
-            function isValidEmail(email) {
-                var emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-                return emailPattern.test(email);
-            }
-
-            function isValidWebsite(website) {
-                var websitePattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-._~:\/?#\[\]@!$&'()*+,;=]*)?$/;
-                return websitePattern.test(website);
-            }
-
-            function isValidLogo(logo) {
-                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-                return allowedExtensions.test(logo);
-            }
-        });
-    </script>
+    <script src="{{ asset('asset/js/company.js') }}"></script>
 @endsection
