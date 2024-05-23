@@ -10,7 +10,7 @@
                     <form id="companyForm" action="{{ route('companies.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <input type="hidden" id="formType" value="add"> <!-- or "edit" -->
+                            <input type="hidden" id="formType" value="add">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control"
                                 value="{{ old('name') }}">
